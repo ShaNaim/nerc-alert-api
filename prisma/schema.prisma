@@ -127,3 +127,17 @@ model AccusedAddress {
   createdAt   DateTime?   @default(now())
   updatedAt   DateTime?   @updatedAt
 }
+
+model AccusedDescription {
+  id        Int       @id @default(autoincrement())
+  slug      String    @unique @default(uuid())
+  height    Decimal?  @db.Decimal(5, 3)
+  color     String?   @db.VarChar(50)
+  teeth     String?   @db.VarChar(50)
+  hair      String?   @db.VarChar(50)
+  eye       String?   @db.VarChar(50)
+  birthMark String?   @db.VarChar(100)
+  details   String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
