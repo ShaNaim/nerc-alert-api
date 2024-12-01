@@ -96,3 +96,22 @@ model Accused {
   createdAt       DateTime? @default(now())
   updatedAt       DateTime? @updatedAt
 }
+
+model Family {
+  id              Int            @id @default(autoincrement())
+  slug            String         @unique @default(uuid())
+  fatherName      String?        @db.VarChar(100)
+  fatherNID       String?        @db.VarChar(100)
+  fatherContact   String?        @db.VarChar(100)
+  motherName      String?        @db.VarChar(100)
+  motherNID       String?        @db.VarChar(100)
+  motherContact   String?        @db.VarChar(100)
+  maritalStatus   MaritalStatus?
+  spouseName      String?        @db.VarChar(100)
+  spouseNID       String?        @db.VarChar(100)
+  spouseContact   String?        @db.VarChar(100)
+  childrenDetails Json? // Combine children fields into one JSON field
+  remark          String?
+  createdAt       DateTime?      @default(now())
+  updatedAt       DateTime?      @updatedAt
+}
