@@ -7,6 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum MaritalStatus {
+  MARRIED
+  UNMARRIED
+  WIDOWED
+  DIVORCED
+}
+
+enum GENDER {
+  MALE
+  FEMALE
+  OTHER
+  UNKNOWN
+}
+
+enum AddressType {
+  PERMANENT
+  TEMPORARY
+}
+
 model User {
   id         Int       @id @default(autoincrement())
   email      String    @unique @db.VarChar(100)
@@ -57,4 +76,23 @@ model Session {
   isBlocked Boolean   @default(false) // If token is blocked (e.g., due to suspicious activity)
   createdAt DateTime? @default(now()) // Created timestamp
   updatedAt DateTime? @updatedAt // Automatically updated timestamp
+}
+
+model Accused {
+  id              Int       @id @default(autoincrement())
+  slug            String    @unique @default(uuid())
+  fullname        String?   @db.VarChar(100)
+  nickname        String?   @db.VarChar(30)
+  contact         String    @unique @db.VarChar(20)
+  gender          GENDER?   @default(UNKNOWN)
+  dob             DateTime?
+  job             String?   @db.VarChar(150)
+  religion        String?   @db.VarChar(10)
+  education       String?   @db.VarChar(150)
+  email           String?   @unique @db.VarChar(100)
+  nid             String?   @unique @db.VarChar(100)
+  businessInfo    String?
+  politicalRemark String?
+  createdAt       DateTime? @default(now())
+  updatedAt       DateTime? @updatedAt
 }
