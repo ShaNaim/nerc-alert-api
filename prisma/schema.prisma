@@ -79,22 +79,25 @@ model Session {
 }
 
 model Accused {
-  id              Int       @id @default(autoincrement())
-  slug            String    @unique @default(uuid())
-  fullname        String?   @db.VarChar(100)
-  nickname        String?   @db.VarChar(30)
-  contact         String    @unique @db.VarChar(20)
-  gender          GENDER?   @default(UNKNOWN)
-  dob             DateTime?
-  job             String?   @db.VarChar(150)
-  religion        String?   @db.VarChar(10)
-  education       String?   @db.VarChar(150)
-  email           String?   @unique @db.VarChar(100)
-  nid             String?   @unique @db.VarChar(100)
-  businessInfo    String?
-  politicalRemark String?
-  createdAt       DateTime? @default(now())
-  updatedAt       DateTime? @updatedAt
+  id                 Int                 @id @default(autoincrement())
+  slug               String              @unique @default(uuid())
+  fullname           String?             @db.VarChar(100)
+  nickname           String?             @db.VarChar(30)
+  contact            String              @unique @db.VarChar(20)
+  gender             GENDER?             @default(UNKNOWN)
+  dob                DateTime?
+  job                String?             @db.VarChar(150)
+  religion           String?             @db.VarChar(10)
+  education          String?             @db.VarChar(150)
+  email              String?             @unique @db.VarChar(100)
+  nid                String?             @unique @db.VarChar(100)
+  businessInfo       String?
+  politicalRemark    String?
+  family             Family?
+  accusedDescription AccusedDescription?
+  addresses          AccusedAddress[] // One-to-many relationship
+  createdAt          DateTime?           @default(now())
+  updatedAt          DateTime?           @updatedAt
 }
 
 model Family {
@@ -112,6 +115,8 @@ model Family {
   spouseContact   String?        @db.VarChar(100)
   childrenDetails Json? // Combine children fields into one JSON field
   remark          String?
+  accusedId       Int?           @unique
+  accused         Accused?       @relation(fields: [accusedId], references: [id])
   createdAt       DateTime?      @default(now())
   updatedAt       DateTime?      @updatedAt
 }
@@ -124,6 +129,8 @@ model AccusedAddress {
   city        String
   postalCode  Int
   addressType AddressType @default(PERMANENT)
+  accusedId   Int // Foreign key for Accused
+  accused     Accused     @relation(fields: [accusedId], references: [id])
   createdAt   DateTime?   @default(now())
   updatedAt   DateTime?   @updatedAt
 }
@@ -138,6 +145,8 @@ model AccusedDescription {
   eye       String?   @db.VarChar(50)
   birthMark String?   @db.VarChar(100)
   details   String?
+  accusedId Int?      @unique
+  accused   Accused?  @relation(fields: [accusedId], references: [id])
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 }
