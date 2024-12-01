@@ -115,3 +115,15 @@ model Family {
   createdAt       DateTime?      @default(now())
   updatedAt       DateTime?      @updatedAt
 }
+
+model AccusedAddress {
+  id          Int         @id @default(autoincrement())
+  slug        String      @unique @default(uuid())
+  holding     String
+  street      String
+  city        String
+  postalCode  Int
+  addressType AddressType @default(PERMANENT)
+  createdAt   DateTime?   @default(now())
+  updatedAt   DateTime?   @updatedAt
+}
