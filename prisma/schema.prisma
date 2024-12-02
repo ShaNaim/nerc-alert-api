@@ -26,6 +26,18 @@ enum AddressType {
   TEMPORARY
 }
 
+enum BusinessType {
+  RETAIL
+  WHOLESALE
+  CARRIER
+  HUNDI
+  GODFATHER
+  LOCAL
+  INTERNATIONALTRAFFICAR
+  TRAFFICAR
+  OTHER
+}
+
 model User {
   id         Int       @id @default(autoincrement())
   email      String    @unique @db.VarChar(100)
@@ -92,10 +104,12 @@ model Accused {
   email              String?             @unique @db.VarChar(100)
   nid                String?             @unique @db.VarChar(100)
   businessInfo       String?
+  businessType       BusinessType?
   politicalRemark    String?
   family             Family?
   accusedDescription AccusedDescription?
   addresses          AccusedAddress[] // One-to-many relationship
+  case               Case[]
   createdAt          DateTime?           @default(now())
   updatedAt          DateTime?           @updatedAt
 }
@@ -149,4 +163,36 @@ model AccusedDescription {
   accused   Accused?  @relation(fields: [accusedId], references: [id])
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
+}
+
+model Case {
+  id              Int       @id @default(autoincrement())
+  slug            String    @unique @default(uuid())
+  caseNo          String    @unique
+  caseDate        DateTime? @default(now())
+  thana           String?
+  location        String?
+  status          String?
+  caseRemark      String?
+  drugDescription String?
+  drupAmount      Decimal?  @db.Decimal(7, 5)
+  Accused         Accused?  @relation(fields: [accusedId], references: [id])
+  accusedId       Int?
+  businessId      Int?      @unique
+  business        Business?
+  updatedAt       DateTime? @updatedAt
+}
+
+model Business {
+  id                      Int       @id @default(autoincrement())
+  slug                    String    @unique @default(uuid())
+  incomeDifferenceDetails String?
+  vehicleDetails          String?
+  accountDetails          String?
+  invesmentDetails        String?
+  remark                  String?
+  createdAt               DateTime? @default(now())
+  updatedAt               DateTime? @updatedAt
+  caseId                  Int?      @unique
+  case                    Case?     @relation(fields: [caseId], references: [id])
 }
